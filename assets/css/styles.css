@@ -1,0 +1,326 @@
+/* ================================================================
+   ICON WALL — Link Page Styles
+   A gallery wall of glyphs: each link is a framed artwork whose
+   artwork IS the platform icon, with a caption plate beneath.
+   Palette: warm plaster gallery wall, black / wood / brass frames
+   Fonts: Cormorant Garamond (placard) + Inter (captions)
+   Motion: CSS entrance animations that END VISIBLE without JS
+================================================================ */
+
+/* ----------------------------------------------------------------
+   1. CUSTOM PROPERTIES
+---------------------------------------------------------------- */
+:root {
+  --color-wall:       #f2ebdf;   /* warm plaster */
+  --color-wall-deep:  #e9dfcd;
+  --color-ink:        #221d16;   /* gallery-label black */
+  --color-ink-soft:   #6f6355;
+  --color-mat:        #faf7f0;   /* mat board */
+  --color-black:      #26221c;   /* thin black frame */
+  --color-wood:       #9a6a3f;   /* warm wood frame */
+  --color-wood-deep:  #7a4f2b;
+  --color-brass:      #b98f3e;   /* brass frame */
+  --color-brass-hi:   #e3c06f;
+  --color-plate:      #f7f2e8;
+
+  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans:  'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ----------------------------------------------------------------
+   2. RESET & BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-wall);
+  /* Soft plaster texture + gentle top light, like gallery track lighting */
+  background-image:
+    radial-gradient(ellipse 140% 50% at 50% -8%, rgba(255, 252, 244, 0.9), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: clip;
+  padding: 0 1rem;
+}
+
+ul { list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ----------------------------------------------------------------
+   3. GALLERY ENTRY (AVATAR + PLACARD)
+---------------------------------------------------------------- */
+.entry {
+  width: 100%;
+  max-width: 34rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 0 1.75rem;
+  animation: entry-in 0.7s ease-out both;
+}
+
+/* Avatar disc — the pipeline swaps the background for a photo and
+   forces border-radius:50%, so keep this a sized circle. */
+.avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, #efe6d4, var(--color-wall-deep) 75%);
+  background-size: cover;
+  background-position: center;
+  border: 3px solid var(--color-black);
+  box-shadow:
+    0 0 0 6px var(--color-mat),
+    0 0 0 7px rgba(38, 34, 28, 0.25),
+    0 14px 26px rgba(60, 45, 25, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  color: var(--color-ink);
+}
+
+/* Museum placard */
+.placard {
+  margin-top: 1.4rem;
+  background: var(--color-plate);
+  border: 1px solid rgba(38, 34, 28, 0.28);
+  border-bottom-width: 3px;
+  padding: 0.9rem 1.6rem 0.95rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(60, 45, 25, 0.12);
+  max-width: 100%;
+}
+
+.placard__name {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 6vw, 1.9rem);
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.placard__handle {
+  margin-top: 0.25rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--color-ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.placard__medium {
+  margin-top: 0.45rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+/* ----------------------------------------------------------------
+   4. THE WALL (GRID)
+---------------------------------------------------------------- */
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.wall {
+  width: 100%;
+  max-width: 34rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 1.25rem;
+  padding: 0.5rem 0.25rem 2rem;
+  justify-items: center;
+}
+
+@media (min-width: 480px) {
+  .wall {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Entrance: each hanging fades and settles; ends visible without JS */
+.hang {
+  width: 100%;
+  max-width: 11rem;
+  animation: hang-in 0.55s ease-out both;
+}
+
+.hang:nth-child(2n) { animation-delay: 0.06s; }
+.hang:nth-child(3n) { animation-delay: 0.12s; }
+.hang:nth-child(4n) { animation-delay: 0.18s; }
+.hang:nth-child(5n) { animation-delay: 0.24s; }
+
+/* ----------------------------------------------------------------
+   5. FRAMES
+---------------------------------------------------------------- */
+.frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  transform: rotate(-1.4deg);
+  transition: transform 0.25s ease;
+}
+
+.hang:nth-child(2n) .frame { transform: rotate(1.2deg); }
+.hang:nth-child(3n) .frame { transform: rotate(-0.7deg); }
+.hang:nth-child(4n) .frame { transform: rotate(0.9deg); }
+
+/* Taking the painting off the wall */
+.frame:hover,
+.frame:focus-visible {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.frame:hover .frame__mat,
+.frame:focus-visible .frame__mat {
+  box-shadow: 0 18px 34px rgba(60, 45, 25, 0.35);
+}
+
+.frame:focus-visible {
+  outline: 2px solid var(--color-wood-deep);
+  outline-offset: 4px;
+}
+
+/* Square frame + mat holding the glyph */
+.frame__mat {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-mat);
+  border: 6px solid var(--color-black);
+  box-shadow:
+    inset 0 0 0 1px rgba(38, 34, 28, 0.15),
+    inset 0 0 22px rgba(60, 45, 25, 0.08),
+    0 10px 20px rgba(60, 45, 25, 0.2);
+  transition: box-shadow 0.25s ease;
+}
+
+/* Frame treatments cycled across the wall:
+   default = thin black, 3n+2 = warm wood, 3n = brass */
+.hang:nth-child(3n+2) .frame__mat {
+  border-color: var(--color-wood);
+  border-width: 8px;
+  border-style: solid;
+  box-shadow:
+    inset 0 0 0 2px var(--color-wood-deep),
+    inset 0 0 22px rgba(60, 45, 25, 0.1),
+    0 10px 20px rgba(60, 45, 25, 0.2);
+}
+
+.hang:nth-child(3n) .frame__mat {
+  border: 7px solid var(--color-brass);
+  border-image: linear-gradient(135deg, var(--color-brass-hi), var(--color-brass) 45%, #8a6526) 1;
+  box-shadow:
+    inset 0 0 0 1px rgba(138, 101, 38, 0.5),
+    inset 0 0 22px rgba(60, 45, 25, 0.1),
+    0 10px 20px rgba(60, 45, 25, 0.22);
+}
+
+/* The artwork: platform icon rendered LARGE.
+   The icon token is a 1em inline SVG (stroke: currentColor), so the
+   container's font-size sets its size. */
+.frame__art {
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--color-ink);
+  display: inline-flex;
+}
+
+.hang:nth-child(3n+2) .frame__art { color: var(--color-wood-deep); }
+.hang:nth-child(3n)   .frame__art { color: #8a6526; }
+
+/* Caption plate beneath the frame */
+.frame__plate {
+  display: block;
+  max-width: 100%;
+  background: var(--color-plate);
+  border: 1px solid rgba(38, 34, 28, 0.25);
+  padding: 0.28rem 0.7rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-ink);
+  box-shadow: 0 2px 5px rgba(60, 45, 25, 0.12);
+  overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------------------------------
+   6. FOOTER
+---------------------------------------------------------------- */
+.site-footer {
+  margin-top: auto;
+  padding: 1.25rem 0 2rem;
+  text-align: center;
+}
+
+.yvow-credit {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+
+.yvow-credit a {
+  color: var(--color-wood-deep);
+  border-bottom: 1px dotted var(--color-wood);
+}
+
+.yvow-credit a:hover {
+  color: var(--color-ink);
+}
+
+/* ----------------------------------------------------------------
+   7. KEYFRAMES  (all end in the visible / resting state)
+---------------------------------------------------------------- */
+@keyframes entry-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hang-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .entry,
+  .hang {
+    animation: none;
+  }
+  .frame,
+  .frame__mat {
+    transition: none;
+  }
+}
